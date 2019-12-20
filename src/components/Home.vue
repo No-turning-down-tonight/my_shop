@@ -1,0 +1,25 @@
+<template>
+    <el-button @click="logout">退出</el-button>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+
+    }
+  },
+  created () {
+
+  },
+  methods: {
+      logout(){
+          window.sessionStorage.clear()
+          this.$router.push('/login')
+      }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+</style>
