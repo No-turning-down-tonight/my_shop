@@ -14,7 +14,8 @@ module.exports = {
     'import/no-duplicates':0,'no-useless-return':0,
     'object-curly-spacing':0,'standard/object-curly-even-spacing':0,
     'semi-spacing':0,'no-unused-vars':0,'keyword-spacing':0,'no-undef':0,
-    'space-before-function-paren':0,
+    'space-before-function-paren':0,'key-spacing':0,'indent':0,'comma-spacing':0,
+    'vue/no-unused-vars':0,'comma-dangle':0,'padded-blocks':0,'eol-last':0
   },
   parserOptions: {
     parser: 'babel-eslint'
