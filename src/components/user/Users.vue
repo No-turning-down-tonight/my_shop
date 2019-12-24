@@ -43,7 +43,12 @@
               @click="deleteUserById(scope.row.id)"
             ></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-setting"
+                size="mini"
+                @click="setRole(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -95,6 +100,26 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="分配角色" :visible.sync="setRoleVisible" width="50%">
+      <p>当前的用户: {{userinfo1.username}}</p>
+      <p>当前的角色: {{userinfo1.role_name}}</p>
+      <p>
+        分配新角色 :
+        <el-select v-model="selectedRoleId" placeholder="请选择">
+          <el-option
+            v-for="item in rolelist"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleVisible = false">取 消</el-button>
+        <el-button type="primary">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -118,8 +143,12 @@ export default {
     return {
       userlist: [],
       total: 0,
+      rolelist: [],
       dialogVisible: false,
       editDialogVisible: false,
+      setRoleVisible: false,
+      userinfo1: {},
+      selectedRoleId: '',
       editForm: {},
       queryInfo: {
         query: '',
@@ -241,7 +270,7 @@ export default {
     editUser() {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
-        const { data: res } = await this.$http.put('users/' + this.editForm.id, {email:ths.email,monile:this.mobile})
+        const { data: res } = await this.$http.put('users/' + this.editForm.id, { email: ths.email, monile: this.mobile })
         if (res.meta.status !== 200) {
           this.$message.error('添加用户失败')
         }
@@ -256,16 +285,29 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).catch(err => err)
-      if(confirmResult !== 'confirm') {
+      if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
-      const { data : res } = await ythis.$http.delete('users/' + id)
+      const { data: res } = await this.$http.delete('users/' + id)
       console.log(res)
-       if (res.meta.status !== 200) {
-          this.$message.error('删除用户失败')
-        }
-        this.$message.success('删除用户成功')
-        this.getUserList()
+      if (res.meta.status !== 200) {
+        this.$message.error('删除用户失败')
+      }
+      this.$message.success('删除用户成功')
+      if (this.userlist.length === 1) {
+        this.queryInfo.pagenum -= 1
+      }
+      this.getUserList()
+    },
+    async setRole(userinfo1) {
+      this.userinfo1 = userinfo1
+      const { data: res } = await this.$http.get('roles')
+      console.log(res)
+      if (res.meta.status !== 200) {
+        this.$message.error('删除用户失败')
+      }
+      this.rolelist = res.data
+      this.setRoleVisible = true
     }
   }
 }
