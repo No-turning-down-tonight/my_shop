@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Select, Option } from 'element-ui'
+import { Button, Select, Option, Cascader } from 'element-ui'
 import { Form, FormItem, TableColumn, Dialog, Tree, MessageBox, Table, Tag, Tooltip, Input, Main, Header, Aside, Container, Card, Row, Col } from 'element-ui'
 import { Message, Menu, Submenu, MenuItemGroup, Pagination, MenuItem, Switch, Breadcrumb, BreadcrumbItem } from 'element-ui'
 
@@ -28,6 +28,7 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
 Vue.use(Tree)
+Vue.use(Cascader)
 Vue.use(Select)
 Vue.use(Option)
 Vue.prototype.$message = Message
